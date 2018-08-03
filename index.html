@@ -32,16 +32,20 @@ ctx.fillRect(MARG+x*SQ+PADD,MARG+y*SQ+PADD,SQ-2*PADD,SQ-2*PADD);
 }
 var x = 4;
 var y = 5;
-var dx = 0;
-var dy = 0;
+var direction = 'Up';
+var snakePos = [{x:4,y:5}]
 var body = document.getElementById('body');
-body.onkeydown = function(e){switch(e.key){
-case 'ArrowUp': dy=-1; dx=0; break;
-case 'ArrowDown': dy=1; dx=0; break;
-case 'ArrowLeft': dy=0; dx=-1; break;
-case 'ArrowRight': dy=0; dx=1; break;
-}};
+body.onkeydown = function(e){if(e.key.substr(0,5)=='Arrow')direction=e.key.substr(5,5)};
 function update(){
+var dx=0;
+var dy=0;
+switch(direction){
+case 'Up':    dy=-1; break;
+case 'Down':  dy=+1; break;
+case 'Left':  dx=-1; break;
+case 'Right': dx=+1; break;
+default: throw RangeError(dircetion+' is not a direction');
+}
 x = (WIDTH+x+dx)%WIDTH;
 y = (HEIGHT+y+dy)%HEIGHT;
 sq(x,y);
