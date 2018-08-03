@@ -14,6 +14,7 @@
 var WIDTH = 10;
 var HEIGHT = 10;
 var SQ = 50;
+var APPLEM = SQ/6; // appple margin
 var PADD = 5;
 var MARG = 10;
 var MARL = 2; // margin line ("border")
@@ -25,14 +26,37 @@ ctx = canvas.getContext('2d');
 canvas.width=WIDTH*SQ+2*MARG;
 canvas.height=HEIGHT*SQ+2*MARG;
 ctx.strokeRect(MARL,MARL,WIDTH*SQ+2*MARG-MARL,HEIGHT*SQ+2*MARG-MARL);  // border
+getNewApple();
+setInterval(update, 1000);
 }
-function sq(x,y, b=true){
+function sq(x,y, b=true, m=0){
 if(x<0||x>=WIDTH||y<0||y>=HEIGHT)throw RangeError('('+x+', '+y+') is out of map ('+WIDTH+', '+HEIGHT+')');
-if(b)ctx.fillRect(MARG+x*SQ+PADD,MARG+y*SQ+PADD,SQ-2*PADD,SQ-2*PADD);
-else ctx.clearRect(MARG+x*SQ+PADD,MARG+y*SQ+PADD,SQ-2*PADD,SQ-2*PADD);
+if(b)ctx.fillRect(MARG+x*SQ+PADD+m,MARG+y*SQ+PADD+m,SQ-2*PADD-2*m,SQ-2*PADD-2*m);
+else ctx.clearRect(MARG+x*SQ+PADD+m,MARG+y*SQ+PADD+m,SQ-2*PADD-2*m,SQ-2*PADD-2*m);
 }
 var direction = 'Up';
-var snakePos = [{x:4,y:5}]
+var snakePos = [{x:4,y:5}];
+
+function isSamePosition(a, b){
+return a.x==b.x&&a.y==b.y;
+}
+
+function checkCollision(t){
+for(var i in snakePos)if(isSamePosition(i,t))return true;
+return false;
+}
+
+function getNewApple(){
+var t;// = undefined;
+do{
+t = {x:Math.floor(Math.random()*WIDTH),
+    y:Math.floor(Math.random()*HEIGHT)}
+}while(checkCollision(t));
+apple = t;
+sq(apple.x,apple.y,true,APPLEM);
+}
+
+var apple = undefined;
 var body = document.getElementById('body');
 body.onkeydown = function(e){if(e.key.substr(0,5)=='Arrow')direction=e.key.substr(5,5)};
 function update(){
@@ -46,19 +70,18 @@ case 'Right': dx=+1; break;
 default: throw RangeError(dircetion+' is not a direction');
 }
 var l = snakePos[snakePos.length-1];
-var x = (WIDTH+l.x+dx)%WIDTH;
-var y = (HEIGHT+l.y+dy)%HEIGHT;
+var n = {x:(WIDTH+l.x+dx)%WIDTH,
+       y:(HEIGHT+l.y+dy)%HEIGHT};
 // calculations of new x, y
-snakePos.push({x:x,y:y});
-sq(x,y);
+snakePos.push(n);
+sq(n.x,n.y);
 // add new part
-var apple = false; // TODO: apples
-if(!apple){// delete last part
+var isApple = isSamePosition(n, apple);
+if(!isApple){// delete last part
 var s = snakePos.shift();
 sq(s.x,s.y, false);
+}else getNewApple();
 }
-}
-setInterval(update, 1000);
 
 </script>
 </body>
