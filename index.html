@@ -8,6 +8,7 @@
 </head>
 <body id="body" onload="init()">
 <canvas id="canvas">
+<!--TODO: center everything--->
 </canvas>
 <script>
 'use strict';
@@ -29,7 +30,7 @@ ctx.strokeRect(MARL,MARL,WIDTH*SQ+2*MARG-MARL,HEIGHT*SQ+2*MARG-MARL);  // border
 getNewApple();
 setInterval(update, 1000);
 }
-function sq(x,y, b=true, m=0){
+function sq(x,y, b=true, m=0){ // TODO: change x,y to object
 if(x<0||x>=WIDTH||y<0||y>=HEIGHT)throw RangeError('('+x+', '+y+') is out of map ('+WIDTH+', '+HEIGHT+')');
 if(b)ctx.fillRect(MARG+x*SQ+PADD+m,MARG+y*SQ+PADD+m,SQ-2*PADD-2*m,SQ-2*PADD-2*m);
 else ctx.clearRect(MARG+x*SQ+PADD+m,MARG+y*SQ+PADD+m,SQ-2*PADD-2*m,SQ-2*PADD-2*m);
@@ -38,11 +39,11 @@ var direction = 'Up';
 var snakePos = [{x:4,y:5}];
 
 function isSamePosition(a, b){
-return a.x==b.x&&a.y==b.y;
+return (a.x==b.x)&&(a.y==b.y);
 }
 
 function checkCollision(t){
-for(var i in snakePos)if(isSamePosition(i,t))return true;
+for(var i=0;i<snakePos.length;++i)if(isSamePosition(snakePos[i],t))return true;
 return false;
 }
 
