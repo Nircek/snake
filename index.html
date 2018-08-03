@@ -42,8 +42,8 @@ case 'ArrowLeft': dy=0; dx=-1; break;
 case 'ArrowRight': dy=0; dx=1; break;
 }};
 function update(){
-x += dx;
-y += dy;
+x = (WIDTH+x+dx)%WIDTH;
+y = (HEIGHT+y+dy)%HEIGHT;
 sq(x,y);
 }
 setInterval(update, 1000);
