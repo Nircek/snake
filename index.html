@@ -7,21 +7,23 @@
 <meta name="author" content="Nircek">
 </head>
 <body id="body" onload="init()">
-<canvas id="canvas" width="500" height="500">
+<canvas id="canvas">
 </canvas>
 <script>
 'use strict';
-var WIDTH = 10;
-var HEIGHT = 10;
+var WIDTH = 50;
+var HEIGHT = 50;
 var SQ = 10;
+var PADD = 5;
 var MARG = 10;
 var MARL = 2; // margin line ("border")
 var canvas = undefined;
 var ctx = undefined;
-var PADD = 1;
 function init(){
 canvas = document.getElementById('canvas');
 ctx = canvas.getContext('2d');
+canvas.width=WIDTH*SQ+2*MARG;
+canvas.height=HEIGHT*SQ+2*MARG;
 ctx.strokeRect(MARL,MARL,WIDTH*SQ+2*MARG-MARL,HEIGHT*SQ+2*MARG-MARL);  // border
 }
 function sq(x,y){
