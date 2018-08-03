@@ -1,0 +1,42 @@
+<body id="body">
+<canvas id="canvas" width="500" height="500">
+</canvas>
+<script>
+'use strict';
+var WIDTH = 10;
+var HEIGHT = 10;
+var SQ = 10;
+var MARG = 10;
+var MARL = 2; // margin line ("border")
+var canvas = undefined;
+var ctx = undefined;
+var PADD = 1;
+function init(){
+canvas = document.getElementById('canvas');
+ctx = canvas.getContext('2d');
+ctx.strokeRect(MARL,MARL,WIDTH*SQ+2*MARG-MARL,HEIGHT*SQ+2*MARG-MARL);  // border
+}
+init();
+function sq(x,y){
+ctx.fillRect(MARG+x*WIDTH+PADD,MARG+y*HEIGHT+PADD,WIDTH-2*PADD,HEIGHT-2*PADD);
+}
+var x = 4;
+var y = 5;
+var dx = 0;
+var dy = 0;
+var body = document.getElementById('body');
+body.onkeydown = function(e){switch(e.key){
+case 'ArrowUp': dy=-1; dx=0; break;
+case 'ArrowDown': dy=1; dx=0; break;
+case 'ArrowLeft': dy=0; dx=-1; break;
+case 'ArrowRight': dy=0; dx=1; break;
+}};
+function update(){
+x += dx;
+y += dy;
+sq(x,y);
+}
+setInterval(update, 1000);
+
+</script>
+</body>
