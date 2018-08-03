@@ -6,7 +6,7 @@
 <meta name="description" content="A basic JS Snake Project by Nircek">
 <meta name="author" content="Nircek">
 </head>
-<body id="body">
+<body id="body" onload="init()">
 <canvas id="canvas" width="500" height="500">
 </canvas>
 <script>
@@ -24,7 +24,6 @@ canvas = document.getElementById('canvas');
 ctx = canvas.getContext('2d');
 ctx.strokeRect(MARL,MARL,WIDTH*SQ+2*MARG-MARL,HEIGHT*SQ+2*MARG-MARL);  // border
 }
-init();
 function sq(x,y){
 ctx.fillRect(MARG+x*WIDTH+PADD,MARG+y*HEIGHT+PADD,WIDTH-2*PADD,HEIGHT-2*PADD);
 }
