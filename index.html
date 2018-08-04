@@ -16,6 +16,8 @@ p{margin-bottom: 10px;}
 <p><a href="https://github.com/Nircek/snake">Source code (GitHub)</a></p>
 <canvas id="canvas">
 </canvas>
+<br>
+<input type="range" id="range">
 <script>
 'use strict';
 var WIDTH   = 10;   // width of board (in squares)
@@ -31,6 +33,7 @@ var direction;
 var snakePos;
 var apple;
 var body;
+var range;
 var ld;             // last delta of direction
 var inter;
 
@@ -41,12 +44,20 @@ function init() {
     body.onkeydown = function(e) {
         if(e.key.substr(0,5)=='Arrow')
             direction = e.key.substr(5,5);
+        switch(e.key){
+            case ',':--range.value;range.oninput();break;
+            case '.':++range.value;range.oninput();break;
+        }
     };
     canvas.width = WIDTH*SQ+2*MARG;
     canvas.height = HEIGHT*SQ+2*MARG;
+    range = document.getElementById('range');
+    range.max = 5;
+    range.valueAsNumber = 0;
+    range.oninput = function(){speed(Math.pow(2, 10-range.valueAsNumber));};
     ctx.strokeRect(MARL, MARL, WIDTH*SQ+2*MARG-MARL, HEIGHT*SQ+2*MARG-MARL);  // border
     start();
-    inter = setInterval(update, 1000);
+    inter = setInterval(update, 1024);
 }
 
 function sq(p, b=true, m=0) {
