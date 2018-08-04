@@ -81,19 +81,22 @@ function update() {
         case 'Right': dx = +1; break;
         default: throw RangeError(direction+' is not a direction');
     }
+    // TODO: add a tackle of backward direction
     var l = snakePos[snakePos.length-1];
     var n = {x:(WIDTH+l.x+dx)%WIDTH,
             y:(HEIGHT+l.y+dy)%HEIGHT};
-    // calculations of new x, y
-    if(checkCollision(n))gameOver();  // TODO: we can't step in the last part of us
+    
+    if(!isSamePosition(n, apple)) {
+        var s = snakePos.shift();
+        if(checkCollision(n)) {
+            snakePos.unshift(s);
+            gameOver();
+            return;
+        }
+        sq(s, false);
+    } else getNewApple();
     snakePos.push(n);
     sq(n);
-    // add new part
-    var isApple = isSamePosition(n, apple);
-    if(!isApple) {// delete last part
-    var s = snakePos.shift();
-    sq(s, false);
-    } else getNewApple();
 }
 
 function start() {
