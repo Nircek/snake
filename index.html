@@ -14,76 +14,84 @@ body{text-align: center;}
 </canvas>
 <script>
 'use strict';
-var WIDTH = 10;
-var HEIGHT = 10;
-var SQ = 50;
-var APPLEM = SQ/6; // appple margin
-var PADD = 5;
-var MARG = 10;
-var MARL = 2; // margin line ("border")
+var WIDTH   = 10;   // width of board (in squares)
+var HEIGHT  = 10;   // height of board (in squares)
+var SQ      = 50;   // size of square (in pixels)
+var APPLEM  = SQ/6; // appple margin
+var PADD    = 5;    // padding of square
+var MARG    = 10;   // "margin" of canvas
+var MARL    = 2;    // margin line ("border")
 var canvas;
 var ctx;
-function init(){
-canvas = document.getElementById('canvas');
-ctx = canvas.getContext('2d');
-canvas.width=WIDTH*SQ+2*MARG;
-canvas.height=HEIGHT*SQ+2*MARG;
-ctx.strokeRect(MARL,MARL,WIDTH*SQ+2*MARG-MARL,HEIGHT*SQ+2*MARG-MARL);  // border
-getNewApple();
-setInterval(update, 1000);
-}
-function sq(p, b=true, m=0){
-if(p.x<0||p.x>=WIDTH||p.y<0||p.y>=HEIGHT)throw RangeError('('+p.x+', '+p.y+') is out of map ('+WIDTH+', '+HEIGHT+')');
-if(b)ctx.fillRect(MARG+p.x*SQ+PADD+m,MARG+p.y*SQ+PADD+m,SQ-2*PADD-2*m,SQ-2*PADD-2*m);
-else ctx.clearRect(MARG+p.x*SQ+PADD+m,MARG+p.y*SQ+PADD+m,SQ-2*PADD-2*m,SQ-2*PADD-2*m);
-}
 var direction = 'Up';
 var snakePos = [{x:4,y:5}];
-
-function isSamePosition(a, b){
-return (a.x==b.x)&&(a.y==b.y);
-}
-
-function checkCollision(t){
-for(var i=0;i<snakePos.length;++i)if(isSamePosition(snakePos[i],t))return true;
-return false;
-}
-
-function getNewApple(){
-var t;// = undefined;
-do{
-t = {x:Math.floor(Math.random()*WIDTH),
-    y:Math.floor(Math.random()*HEIGHT)}
-}while(checkCollision(t));
-apple = t;
-sq(apple,true,APPLEM);
-}
-
 var apple;
 var body = document.getElementById('body');
-body.onkeydown = function(e){if(e.key.substr(0,5)=='Arrow')direction=e.key.substr(5,5)};
-function update(){
-var dx=0;
-var dy=0;
-switch(direction){
-case 'Up':    dy=-1; break;
-case 'Down':  dy=+1; break;
-case 'Left':  dx=-1; break;
-case 'Right': dx=+1; break;
-default: throw RangeError(dircetion+' is not a direction');
+body.onkeydown = function(e) {
+    if(e.key.substr(0,5)=='Arrow')
+        direction = e.key.substr(5,5);
+};
+
+function init() {
+    canvas = document.getElementById('canvas');
+    ctx = canvas.getContext('2d');
+    canvas.width = WIDTH*SQ+2*MARG;
+    canvas.height = HEIGHT*SQ+2*MARG;
+    ctx.strokeRect(MARL, MARL, WIDTH*SQ+2*MARG-MARL, HEIGHT*SQ+2*MARG-MARL);  // border
+    getNewApple();
+    setInterval(update, 1000);
 }
-var l = snakePos[snakePos.length-1];
-var n = {x:(WIDTH+l.x+dx)%WIDTH,
-       y:(HEIGHT+l.y+dy)%HEIGHT};
-// calculations of new x, y
-snakePos.push(n);
-sq(n,n);
-// add new part
-var isApple = isSamePosition(n, apple);
-if(!isApple){// delete last part
-var s = snakePos.shift();
-sq(s, false);
-}else getNewApple();
+
+function sq(p, b=true, m=0) {
+    if(p.x<0||p.x>=WIDTH||p.y<0||p.y>=HEIGHT)
+        throw RangeError('('+p.x+', '+p.y+') is out of map ('+WIDTH+', '+HEIGHT+')');
+    if(b) ctx.fillRect(MARG+p.x*SQ+PADD+m, MARG+p.y*SQ+PADD+m, SQ-2*PADD-2*m, SQ-2*PADD-2*m);
+    else ctx.clearRect(MARG+p.x*SQ+PADD+m, MARG+p.y*SQ+PADD+m, SQ-2*PADD-2*m, SQ-2*PADD-2*m);
+}
+
+function isSamePosition(a, b) {
+    return (a.x==b.x)&&(a.y==b.y);
+}
+
+function checkCollision(t) {
+    for(var i=0; i<snakePos.length; ++i)
+        if(isSamePosition(snakePos[i], t))
+            return true;
+    return false;
+}
+
+function getNewApple() {
+    var t;
+    do {
+        t = {x:Math.floor(Math.random()*WIDTH),
+             y:Math.floor(Math.random()*HEIGHT)}
+    } while(checkCollision(t));
+    apple = t;
+    sq(apple, true, APPLEM);
+}
+
+function update() {
+    var dx = 0;
+    var dy = 0;
+    switch(direction){
+        case 'Up':    dy = -1; break;
+        case 'Down':  dy = +1; break;
+        case 'Left':  dx = -1; break;
+        case 'Right': dx = +1; break;
+        default: throw RangeError(direction+' is not a direction');
+    }
+    var l = snakePos[snakePos.length-1];
+    var n = {x:(WIDTH+l.x+dx)%WIDTH,
+            y:(HEIGHT+l.y+dy)%HEIGHT};
+    // calculations of new x, y
+    snakePos.push(n);
+    sq(n);
+    // add new part
+    var isApple = isSamePosition(n, apple);
+    if(!isApple) {// delete last part
+    var s = snakePos.shift();
+    sq(s, false);
+    } else getNewApple();
 }
 
 </script>
