@@ -56,7 +56,7 @@ function isSamePosition(a, b) {
 }
 
 function checkCollision(t) {
-    for(var i=0; i<snakePos.length; ++i)
+    for(var i=0; i<snakePos.length-1; ++i)
         if(isSamePosition(snakePos[i], t))
             return true;
     return false;
@@ -87,18 +87,16 @@ function update() {
     var l = snakePos[snakePos.length-1];
     var n = {x:(WIDTH+l.x+d.x)%WIDTH,
             y:(HEIGHT+l.y+d.y)%HEIGHT};
-    
-    if(!isSamePosition(n, apple)) {
-        var s = snakePos.shift();
-        if(checkCollision(n)) {
-            snakePos.unshift(s);
-            gameOver();
-            return;
-        }
-        sq(s, false);
-    } else getNewApple();
     snakePos.push(n);
     sq(n);
+    if(!isSamePosition(n, apple)) {
+        var s = snakePos.shift();
+        sq(s, false);
+    } else getNewApple();
+    if(checkCollision(n)) {
+        gameOver();
+        return;
+    }
 }
 
 function start() {
