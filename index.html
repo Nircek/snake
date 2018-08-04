@@ -26,15 +26,16 @@ var ctx;
 var direction = 'Up';
 var snakePos = [{x:4,y:5}];
 var apple;
-var body = document.getElementById('body');
-body.onkeydown = function(e) {
-    if(e.key.substr(0,5)=='Arrow')
-        direction = e.key.substr(5,5);
-};
+var body;
 
 function init() {
     canvas = document.getElementById('canvas');
     ctx = canvas.getContext('2d');
+    body = document.getElementById('body');
+    body.onkeydown = function(e) {
+        if(e.key.substr(0,5)=='Arrow')
+            direction = e.key.substr(5,5);
+    };
     canvas.width = WIDTH*SQ+2*MARG;
     canvas.height = HEIGHT*SQ+2*MARG;
     ctx.strokeRect(MARL, MARL, WIDTH*SQ+2*MARG-MARL, HEIGHT*SQ+2*MARG-MARL);  // border
@@ -94,6 +95,13 @@ function update() {
     } else getNewApple();
 }
 
+function start() {
+    // clear canvas
+    // reset points
+    // reset snakePos
+    // reset direction
+    // get new apple
+}
 </script>
 </body>
 </html>
