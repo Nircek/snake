@@ -104,11 +104,11 @@ function update() {
     var n = {x:(WIDTH+l.x+d.x)%WIDTH,
             y:(HEIGHT+l.y+d.y)%HEIGHT};
     snakePos.push(n);
-    sq(n);
     if(!isSamePosition(n, apple)) {
         var s = snakePos.shift();
         sq(s, false);
     } else getNewApple();
+    sq(n);
     if(checkCollision(n)) {
         gameOver();
         return;
