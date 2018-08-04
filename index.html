@@ -28,6 +28,7 @@ var snakePos;
 var apple;
 var body;
 var ld;             // last delta of direction
+var inter;
 
 function init() {
     canvas = document.getElementById('canvas');
@@ -41,7 +42,7 @@ function init() {
     canvas.height = HEIGHT*SQ+2*MARG;
     ctx.strokeRect(MARL, MARL, WIDTH*SQ+2*MARG-MARL, HEIGHT*SQ+2*MARG-MARL);  // border
     start();
-    setInterval(update, 1000);
+    inter = setInterval(update, 1000);
 }
 
 function sq(p, b=true, m=0) {
@@ -107,9 +108,15 @@ function start() {
     getNewApple();  // get new apple
     ld = {x:0, y:-1};
 }
+
 function gameOver(){
     alert('Game over! You got '+snakePos.length+' points.');
     start();
+}
+
+function speed(x) {
+    clearInterval(inter);
+    inter = setInterval(update, x);
 }
 </script>
 </body>
