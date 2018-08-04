@@ -23,8 +23,8 @@ var MARG    = 10;   // "margin" of canvas
 var MARL    = 2;    // margin line ("border")
 var canvas;
 var ctx;
-var direction = 'Up';
-var snakePos = [{x:4,y:5}];
+var direction;
+var snakePos;
 var apple;
 var body;
 
@@ -39,7 +39,7 @@ function init() {
     canvas.width = WIDTH*SQ+2*MARG;
     canvas.height = HEIGHT*SQ+2*MARG;
     ctx.strokeRect(MARL, MARL, WIDTH*SQ+2*MARG-MARL, HEIGHT*SQ+2*MARG-MARL);  // border
-    getNewApple();
+    start();
     setInterval(update, 1000);
 }
 
@@ -96,11 +96,12 @@ function update() {
 }
 
 function start() {
-    // clear canvas
+    ctx.clearRect(MARG, MARG, WIDTH*SQ, HEIGHT*SQ); // clear canvas
+    // TODO: points
     // reset points
-    // reset snakePos
-    // reset direction
-    // get new apple
+    snakePos = [{x:4,y:5}]; // reset snakePos
+    direction = 'Up';   // reset direction
+    getNewApple();  // get new apple
 }
 </script>
 </body>
