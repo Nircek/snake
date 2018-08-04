@@ -85,6 +85,7 @@ function update() {
     var n = {x:(WIDTH+l.x+dx)%WIDTH,
             y:(HEIGHT+l.y+dy)%HEIGHT};
     // calculations of new x, y
+    if(checkCollision(n))gameOver();  // TODO: we can't step in the last part of us
     snakePos.push(n);
     sq(n);
     // add new part
@@ -97,11 +98,14 @@ function update() {
 
 function start() {
     ctx.clearRect(MARG, MARG, WIDTH*SQ, HEIGHT*SQ); // clear canvas
-    // TODO: points
     // reset points
     snakePos = [{x:4,y:5}]; // reset snakePos
     direction = 'Up';   // reset direction
     getNewApple();  // get new apple
+}
+function gameOver(){
+    alert('Game over! You got '+snakePos.length+' points.');
+    start();
 }
 </script>
 </body>
