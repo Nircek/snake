@@ -27,6 +27,7 @@ var direction;
 var snakePos;
 var apple;
 var body;
+var ld;             // last delta of direction
 
 function init() {
     canvas = document.getElementById('canvas');
@@ -72,19 +73,20 @@ function getNewApple() {
 }
 
 function update() {
-    var dx = 0;
-    var dy = 0;
+    var d = {x:0, y:0};
     switch(direction){
-        case 'Up':    dy = -1; break;
-        case 'Down':  dy = +1; break;
-        case 'Left':  dx = -1; break;
-        case 'Right': dx = +1; break;
+        case 'Up':    d.y = -1; break;
+        case 'Down':  d.y = +1; break;
+        case 'Left':  d.x = -1; break;
+        case 'Right': d.x = +1; break;
         default: throw RangeError(direction+' is not a direction');
     }
-    // TODO: add a tackle of backward direction
+    if((d.x+ld.x==0)&&(d.y+ld.y==0)&&(snakePos.length!=1))
+        d = ld;
+    ld = d;
     var l = snakePos[snakePos.length-1];
-    var n = {x:(WIDTH+l.x+dx)%WIDTH,
-            y:(HEIGHT+l.y+dy)%HEIGHT};
+    var n = {x:(WIDTH+l.x+d.x)%WIDTH,
+            y:(HEIGHT+l.y+d.y)%HEIGHT};
     
     if(!isSamePosition(n, apple)) {
         var s = snakePos.shift();
@@ -105,6 +107,7 @@ function start() {
     snakePos = [{x:4,y:5}]; // reset snakePos
     direction = 'Up';   // reset direction
     getNewApple();  // get new apple
+    ld = {x:0, y:-1};
 }
 function gameOver(){
     alert('Game over! You got '+snakePos.length+' points.');
